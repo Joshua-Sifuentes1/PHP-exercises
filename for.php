@@ -2,6 +2,7 @@
 // prompt user for starting number
 
 // added do-while loop if user does not enter a numeric value;
+
 do{	
 	fwrite(STDOUT, 'Enter a starting value: ');
 	$start = trim(fgets(STDIN));
@@ -10,10 +11,10 @@ do{
 	}
 } while(!is_numeric($start));
 
-
 // prompt the user for ending number
 
 // loop for invalid input
+
 do{	
 	fwrite(STDOUT, 'Enter a ending value: ');
 	$end = trim(fgets(STDIN));
@@ -23,6 +24,7 @@ do{
 } while(!is_numeric($end));
 
 // Allow user to select the increment the numbers are displayed by.
+
 fwrite(STDOUT, 'Select increment: ');
 $increment = trim(fgets(STDIN));
 
@@ -37,7 +39,5 @@ if (!is_numeric($increment)){
 for ($i = $start; $i <= $end; $i += $increment) {
 	echo $i . PHP_EOL;
 }
-
-
 
 ?>
