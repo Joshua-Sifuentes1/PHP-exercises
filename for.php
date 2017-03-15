@@ -28,9 +28,19 @@ do{
 fwrite(STDOUT, 'Select increment: ');
 $increment = trim(fgets(STDIN));
 
+// if start value is larger than end value
+
+if ($start > $end) {
+	$newStart = $end;
+	$newEnd = $start;
+	$start = $newStart;
+	$end = $newEnd;
+
+}
+
 // defaulting increment to 1 if value is not numeric.
 
-if (!is_numeric($increment)){
+if (empty($increment) || !is_numeric($increment)){
 	$increment = 1;
 } 
 
