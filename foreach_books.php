@@ -22,4 +22,14 @@ $books = array(
     )
 );
 
+echo "-----------------------------", PHP_EOL;
+// Create foreach loop that iterates through the array.
+foreach ($books as $key => $book) {
+	echo $key, PHP_EOL;
+		foreach ($book as $key => $value) {
+			echo $key, ': ', $value, PHP_EOL;
+		}
+		echo "-----------------------------", PHP_EOL;
+}
+
 ?>
