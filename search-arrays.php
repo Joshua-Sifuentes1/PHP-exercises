@@ -13,9 +13,9 @@ function search($name, $array){
 	$result = array_search($name, $array);
 
 	if($result !== false) {
-		return "True" . PHP_EOL;
+		return True;
 	} else {
-		return "False" . PHP_EOL;
+		return False;
 	}
 }
 
@@ -36,4 +36,18 @@ function compare($firstArray, $secondArray){
 	return $i . PHP_EOL;
 }
 echo compare($names, $compare);
+
+// instructor example
+
+function compareArrays($listOfNames, $arrayToCompare){
+	$i = 0;
+	foreach($listOfNames as $name) {
+		
+		if (search($name, $arrayToCompare)){
+			$i++;
+		}
+	}
+	return $i . PHP_EOL;
+}
+echo compareArrays($names, $compare);
 
