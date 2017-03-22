@@ -26,43 +26,60 @@ function optionSelected()
 
 	switch ($userInput) {
 	case 1:
+		echo PHP_EOL;
 		viewContacts();
 		break;
 	case 2:
+		echo PHP_EOL;
 		newContact();
 		break;
 	case 3:
+		echo PHP_EOL;
 		searchContacts();
 		break;
 	case 4:
+		echo PHP_EOL;
 		deleteContact();
 		break;
 	case 5:
+		echo PHP_EOL;
+		echo "Goodbye!" . PHP_EOL;
+		echo PHP_EOL;
 		exitApplication();
 		break;
+	default:
+		mainMenu();
 	}
 }
-
-// Your contacts should be saved to that same file when exiting the command line application.
-
-// The user interface for your application must include a main menu like the following, where the user will need to enter a number between 1 and 5. ```
-
-// function to add contacts
 
 // View contacts.
 function viewContacts()
 {
+	$contacts = [];
+
 	clearstatcache();
 	$filename = "contacts.txt";
 
 	$handle = fopen($filename, 'r');
-	$contents = fread($handle, filesize($filename));
+	$contents = trim(fread($handle, filesize($filename)));
 	fclose($handle);
-	echo "-----------------------" . PHP_EOL;
-	echo "Name	| Phone Number" . PHP_EOL;
-	echo "-----------------------" . PHP_EOL;
-	echo $contents . PHP_EOL;
 
+	$listOfContacts = explode("\n", $contents);
+	foreach ($listOfContacts as $key => $contact) {
+		$tempArray = explode("|", $contact);
+		
+		$contacts[$key]["name"] = $tempArray[0];
+
+		$phone = substr($tempArray[1], 0, 3) . '-' . substr($tempArray[1], 3, 3) . '-' . substr($tempArray[1], 6);
+
+		$contacts[$key]["number"] = $phone;
+	}
+
+	fwrite(STDOUT, PHP_EOL . "Name | Phone Number" . PHP_EOL . (str_pad("", 20, '-')) . PHP_EOL);
+	foreach ($contacts as $key => $contact) {
+		echo $contact["name"] . "|" . $contact["number"] . PHP_EOL;
+	}
+	echo PHP_EOL;
 	mainMenu();
 }
 // Add a new contact.
@@ -100,13 +117,17 @@ function newContact()
 
 		fwrite(STDOUT, "Is the information correct (y/n)?" . PHP_EOL);
 		fwrite(STDOUT, "$firstName $lastName|$phoneNumber" . PHP_EOL);
-		$correctInfo = trim(fgets(STDIN));
-	} while ($correctInfo == "N" || $correctInfo == "n");
+		$correctInfo = trim(strtolower(fgets(STDIN)));
+
+	} while ($correctInfo == "n");
+
+	fwrite(STDOUT, "Contact created!" . PHP_EOL);
 
 	fwrite($handle, "$firstName $lastName|$phoneNumber" . PHP_EOL);
 
 	fclose($handle);
 
+	echo PHP_EOL;
 	mainMenu();
 	
 }
@@ -114,7 +135,24 @@ function newContact()
 // Search a contact by name.
 function searchContacts()
 {
-	echo "blah blah" . PHP_EOL;
+	$filename = "contacts.txt";
+
+	$handle = fopen($filename, 'r');
+	$contents = trim(fread($handle, filesize($filename)));
+	fclose($handle);
+
+	$tempArray = explode("\n", $contents);
+	fwrite(STDOUT, "Please enter contact name: ");
+	$contactName = trim(strtolower(fgets(STDIN)));
+
+	fwrite(STDOUT, PHP_EOL . "Name | Phone Number" . PHP_EOL . (str_pad("", 20, '-')) . PHP_EOL);
+	foreach ($tempArray as $key => $contact) {
+		if(preg_match("($contactName)", strtolower($contact))) {
+			echo $contact . PHP_EOL;
+		}
+		
+	}
+
 }
 
 // Delete an existing contact.
@@ -123,7 +161,6 @@ function deleteContact()
 	echo "blah blah blah" . PHP_EOL;
 }
 
-// Exit. Enter an option (1, 2, 3, 4 or 5):
 function exitApplication()
 {
 	exit();
