@@ -153,12 +153,41 @@ function searchContacts()
 		
 	}
 
+	echo PHP_EOL;
+	mainMenu();
+
 }
 
 // Delete an existing contact.
 function deleteContact()
 {
-	echo "blah blah blah" . PHP_EOL;
+	$filename = "contacts.txt";
+
+	$handle = fopen($filename, 'r');
+	$contents = trim(fread($handle, filesize($filename)));
+	fclose($handle);
+
+	$tempArray = explode("\n", $contents);
+	fwrite(STDOUT, "Please enter contact name to delete: ");
+	$contactName = trim(strtolower(fgets(STDIN)));
+
+	fwrite(STDOUT, PHP_EOL . "Name | Phone Number" . PHP_EOL . (str_pad("", 20, '-')) . PHP_EOL);
+	foreach ($tempArray as $key => $contact) {
+		if(preg_match("($contactName)", strtolower($contact))) {
+			array_splice($tempArray, $key, 1);
+			echo $contact . PHP_EOL;
+		}
+	}
+
+	$file = implode("\n", $tempArray);
+
+	$handle = fopen($filename, 'w');
+	$contents = fwrite($handle, $file);
+	fclose($handle);
+
+	echo PHP_EOL;
+	mainMenu();
+
 }
 
 function exitApplication()
