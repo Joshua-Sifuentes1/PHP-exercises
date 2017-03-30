@@ -14,15 +14,15 @@ function logMessage($logLevel, $message)
 
 }
 
-function logInfo($level, $message)
+function info($message)
 {
-	logMessage($level, $message);
+	logMessage("INFO", $message);
 }
 
-function logError($level, $message)
+function error($message)
 {
-	logMessage($level, $message);
+	logMessage("ERROR", $message);
 }
 
-logInfo("INFO", "This is an info message.");
-logError("ERROR", "This is an info message.");
+logInfo("This is an info message.");
+logError("This is an info message.");
